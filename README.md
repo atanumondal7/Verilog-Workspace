@@ -6,7 +6,7 @@ This repository contains all Verilog programs which I have written till date. It
 
 ### Projects:
 
-1. Traffic Light Simulator - A fully functional traffic light simulator with custom delays and timing logic.
+1. Traffic Light Simulator - A fully functional traffic light simulator with custom delays and timing logic based upon clock edge.
 
 2. Accumulator (Manual) - Built from primitives gates, this accumulator houses a Ripple Carry Adder (RCA) which performs the sequential addition logic at clock edge
 
