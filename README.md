@@ -9,3 +9,5 @@ This repository contains all Verilog programs which I have written till date. It
 1. Traffic Light Simulator - A fully functional traffic light simulator with custom delays and timing logic.
 
 2. Accumulator (Manual) - Built from primitives gates, this accumulator houses a Ripple Carry Adder (RCA) which performs the sequential addition logic at clock edge
+
+3. 4 bit ALU (CRT Testbench) - It features a generic ALU with ADD, SUBTRACT, AND, OR operations using basic SV code. However, the testbench implemented for this uses a modern and advanced methodology showcasing coverage-driven verification wrapped around by constrained random testing (CRT) inside an OOP class.
