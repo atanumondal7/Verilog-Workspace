@@ -1,5 +1,7 @@
 # 4 bit ALU Testbench
 
+<img width="918" height="520" alt="4 bit ALU (CDV)" src="https://github.com/user-attachments/assets/b66b391c-2c26-462f-bae3-6ed814d6d612" />
+
 By utilising OOP architecture and class implementations, I have created a multi-layered testbench spanning across 10 files in order to precisely verify every working component of the ALU and target edge cases by stress testing the input variables through a transaction (item) class.
 
 ## RTL Framework
@@ -32,16 +34,16 @@ The testbench follows a UVM-inspired layered design pattern, separating stimulus
 
 ## Simulation / How to Run
 
-To compile and execute the testbench in Synopsys VCS:
+To compile and execute the testbench and DUT in Siemens Questa:
 
 ```bash
-# 1. Compile & Elaborate
-vcs -sverilog -full64 -debug_access+all \
-  alu.sv \
-  alu_if.sv \
-  alu_pkg.sv \
-  alu_tb.sv \
-  -o simv
+vlib work
+vmap work work
 
-# 2. Run Simulation
-./simv
+vlog -sv alu.sv alu_pkg.sv alu_if.sv alu_tb.sv
+
+vsim -c -voptargs="+acc" work.alu_tb
+vcd file dump.vcd
+vcd add -r /alu_tb/*
+run -all
+quit -f
