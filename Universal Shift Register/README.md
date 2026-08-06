@@ -1,5 +1,7 @@
 # Universal Shift Register Testbench
 
+<img width="4703" height="2232" alt="Universal Shift Register" src="https://github.com/user-attachments/assets/4ff2e877-c3d0-43d1-b883-1fd282838692" />
+
 By utilizing OOP architecture and class implementations, I have created a multi-layered testbench spanning across 11 files in order to precisely verify every working component of the Universal Shift Register (USR) and target edge cases by stress testing the input variables through a transaction (item) class.
 
 ## RTL Framework
