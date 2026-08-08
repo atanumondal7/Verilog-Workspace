@@ -48,6 +48,8 @@ def run_simulation():
         "work.usr_tb",
         "-l",
         temp_transcript_path,
+        "-sv_seed",
+        "random",
         "-do",
         tcl_commands,
     ]

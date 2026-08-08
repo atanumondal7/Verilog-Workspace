@@ -1,0 +1,16 @@
+# [ITEM] Inputs: a=9, b=12, opcode=3 | Outputs: y=13, neg_flag=0, zero_flag=0, carry_out=0
+# [SCOREBOARD] |SUCCESS| a=9, b=12, opcode=3 -> y=13, neg_flag=0, zero_flag=0, carry_out=0
+# [ITEM] Inputs: a=12, b=13, opcode=0 | Outputs: y=9, neg_flag=0, zero_flag=0, carry_out=1
+# [SCOREBOARD] |SUCCESS| a=12, b=13, opcode=0 -> y=9, neg_flag=0, zero_flag=0, carry_out=1
+# Functional Coverage: 100.00%
+# ===================================================
+# ===================================================
+#             FINAL VERIFICATION SUMMARY
+# ===================================================
+#  Total Passed: 5000
+#  Total Failed: 0
+# ===================================================
+# ===================================================
+# >>>> SIMULATION PASSED <<<<
+# ** Note: $finish    : alu_environment.sv(102)
+#    Time: 100050 ns  Iteration: 0  Instance: /alu_tb

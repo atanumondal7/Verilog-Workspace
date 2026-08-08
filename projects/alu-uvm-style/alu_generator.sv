@@ -6,7 +6,7 @@ import alu_pkg::*;
 class generator;
 
 mailbox #(alu_item) gen2drv;
-int loop_count = 1000;
+int loop_count = 5000;
 
 function new(mailbox #(alu_item) gen2drv);
 this.gen2drv = gen2drv;

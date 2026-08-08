@@ -1,0 +1,25 @@
+# [ITEM] rst=0  mode=11  s_in_l=0  s_in_r=0  p_in=0011 -> p_out=0011
+# [SCOREBOARD MATCH] rst=0, mode=11, s_in_l=0, s_in_r=0, p_in=0011 -> p_out=0011
+# [ITEM] rst=0  mode=11  s_in_l=0  s_in_r=1  p_in=1110 -> p_out=1110
+# [SCOREBOARD MATCH] rst=0, mode=11, s_in_l=0, s_in_r=1, p_in=1110 -> p_out=1110
+# ===================================================
+#                COVERAGE SUMMARY
+# ===================================================
+#  Reset Cover: Covered
+#  Mode Cover: 4/4, 100.00%
+#  S_In Left Cover: Covered
+#  S_In Right Cover: Covered
+#  P_In Cover: 16/16, 100.00%
+#  P_Out Cover: 16/16, 100.00%
+#  Other(s) Cover: 46/46, 100.00%
+# ===================================================
+#  Total Coverage: 100.00%
+# ===================================================
+#             FINAL VERIFICATION SUMMARY
+# ===================================================
+#  Total Passed: 5000
+#  Total Failed: 0
+# ===================================================
+# >>>> SIMULATION PASSED <<<<
+# ** Note: $finish    : usr_environment.sv(102)
+#    Time: 100050 ns  Iteration: 0  Instance: /usr_tb

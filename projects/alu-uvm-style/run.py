@@ -46,6 +46,8 @@ def run_simulation():
        "work.alu_tb",
        "-l",
        temp_transcript_path,
+       "-sv_seed",
+       "random",
        "-do",
        tcl_command,
     ]
