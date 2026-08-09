@@ -1,40 +1,57 @@
-# Universal Shift Register Testbench
-
-<img width="4703" height="2232" alt="Universal Shift Register" src="https://github.com/user-attachments/assets/4ff2e877-c3d0-43d1-b883-1fd282838692" />
-
-By utilizing OOP architecture and class implementations, I have created a multi-layered testbench spanning across 11 files in order to precisely verify every working component of the Universal Shift Register (USR) and target edge cases by stress testing the input variables through a transaction (item) class.
-
-## RTL Framework
-
-• [usr.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr.sv) (RTL Design): The core Universal Shift Register module. It supports operational modes such as hold/no-change, shift-left, shift-right, and parallel load based on control select signals (`mode`), operating synchronously with clock and asynchronous/synchronous reset inputs.
-
-## Class Architecture & Component Responsibilities
-The testbench follows a UVM-inspired layered design pattern, separating stimulus generation, driving, monitoring, and checking. For detailed inspection, visit the files in the following order:
-
-• [usr_if.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_if.sv) (Interface): Encapsulates all Universal Shift Register signals, clocking blocks, and modports to cleanly bridge the OOP testbench environment with the hardware design.
-
-• [usr_item.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_item.sv) (Transaction Class): Defines the transaction object containing inputs (serial inputs, parallel data input, mode select) and expected/actual outputs.
-
-• [usr_generator.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_generator.sv) (Generator): Creates randomized transactions and passes them to the driver via mailbox (`gen2drv`).
-
-• [usr_driver.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_driver.sv) (Driver): Unpacks transactions received from the generator and drives the signal levels onto the virtual interface (`vif`) in sync with the design clock.
-
-• [usr_monitor.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_monitor.sv) (Monitor): Passively samples signal activity on the virtual interface, captures response vectors, and forwards them to the scoreboard and coverage collector.
-
-• [usr_scoreboard.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_scoreboard.sv) (Scoreboard): Implements a golden reference model for the Universal Shift Register. Compares the actual output captured by the monitor against expected results and reports pass/fail statistics.
-
-• [usr_coverage.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_coverage.sv) (Functional Coverage): Defines coverpoints and edge cases manually through conditional statements for mode transitions, serial/parallel inputs, and operational states to ensure all shift and load modes are thoroughly exercised.
-
-• [usr_environment.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_environment.sv) (Environment): Container class that instantiates, connects, and coordinates all testbench components (generator, driver, monitor, scoreboard, coverage).
-
-• [usr_pkg.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_pkg.sv) (Package): Encapsulates all classes and parameters into a single package scope for modular compilation.
-
-• [usr_tb.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/Universal%20Shift%20Register/usr_tb.sv) (Top Testbench Module): The top-level SystemVerilog module that generates the clock/reset, instantiates the Design Under Test (`usr.sv`) and interface (`usr_if.sv`), and runs the environment.
-
-## Simulation / How to Run
-
-To compile and execute the testbench using Siemens Questa / ModelSim via the provided TCL script (`run.do`):
-
+# Universal Shift Register — Coverage-Driven Verification
+ 
+A 4-bit Universal Shift Register (parameterized, so it scales to any width) verified with a self-built, class-based testbench: mailbox-connected to generator/driver/monitor, a golden reference model for scoreboard, and manually-coded functional coverage.
+ 
+Questa (Altera FPGA Starter Edition 25.1) doesn't include `rand`/`constraint` or `covergroup` support as it lacks `svverification` features, so this isn't UVM or constrained-random in the usual sense as stimulus is generated with `$urandom_range`, and coverage is tracked with 85 hand-coded boolean bins instead of covergroups. It's more manual work than a standardized flow, but it forced me to actually think through what "covered" means for every signal instead of letting a covergroup do it for me.
+ 
+## Architecture
+ 
+![USR Testbench Architecture](docs/architecture.png)
+ 
+## Result
+ 
+```
+ Reset Cover: Covered
+ Mode Cover: 4/4, 100.00%
+ S_In Left Cover: Covered
+ S_In Right Cover: Covered
+ P_In Cover: 16/16, 100.00%
+ P_Out Cover: 16/16, 100.00%
+ Other(s) Cover: 46/46, 100.00%
+ Total Coverage: 100.00%
+ 
+ Total Passed: 5000
+ Total Failed: 0
+ >>>> SIMULATION PASSED <<<<
+```
+ 
+![Waveform](docs/waveform-viewer.jpg)
+ 
+## The Bug: A 2-cycle offset between stimulus and observed output
+ 
+The interface uses a clocking block with `input #1 output #1` skew; standard practice to avoid race conditions between the driver and the DUT. But it means `p_out` isn't valid at the monitor until 1 cycle after it's valid at the DUT pin, and combined with the mailbox communication between driver and monitor, the *input* that the monitor should pair with a given `p_out` sample is actually 2 cycles behind the input which is currently on the bus, not the one idling on the current cycle of the clock.
+ 
+First test at the monitor paired inputs and outputs in the same cycle, and the scoreboard threw mismatches that weren't real bugs. The DUT was correct, the checking was misaligned. Fixed it by priming the monitor with 2 clocking-block edges before sampling starts, and keeping a 1-cycle history buffer of inputs so each `p_out` sample gets compared against the input that was actually driving the DUT when the DUT produced it, not against the input on the bus at sample time.
+ 
+## File Hierarchy
+ 
+| File | Role |
+|---|---|
+| [`usr.sv`](usr.sv) | RTL — parameterized shift register, mode-selected hold/shift-left/shift-right/parallel-load |
+| [`usr_if.sv`](usr_if.sv) | Interface + clocking block |
+| [`usr_item.sv`](usr_item.sv) | Transaction object |
+| [`usr_generator.sv`](usr_generator.sv) | Stimulus generation (`$urandom_range`, no `rand`/`constraint`) |
+| [`usr_driver.sv`](usr_driver.sv) | Drives transactions onto the DUT through `vif` |
+| [`usr_monitor.sv`](usr_monitor.sv) | Samples the DUT using `vif`, handles the 2-edge priming described above |
+| [`usr_scoreboard.sv`](usr_scoreboard.sv) | Golden reference model, self-checking pass/fail |
+| [`usr_coverage.sv`](usr_coverage.sv) | 85 manually-coded coverage bins |
+| [`usr_environment.sv`](usr_environment.sv) | Wires everything together, runs 5000 transactions |
+| [`usr_pkg.sv`](usr_pkg.sv) / [`usr_tb.sv`](usr_tb.sv) | Package and top-level testbench |
+ 
+## Compilation & Simulation
+ 
 ```bash
-# Execute the automated build & run DO script in command-line mode
-vsim -c -do run.do
+python run.py
+```
+ 
+Executes the Questa workflow (`vlib`/`vmap`/`vlog`/`vsim`) in a single `run.py` script and appends each run's transcript to `simulation_history.log`.
