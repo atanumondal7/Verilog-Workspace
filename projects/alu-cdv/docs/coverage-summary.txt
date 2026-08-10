@@ -1,0 +1,8 @@
+# [TB_LOOP] Inputs: a=1, b=11, opcode=3 | Outputs: y=11, neg_flag=0, zero_flag=0, carry_out=0
+# [SUCCESS] Time: 90060 | Matched expected: result:11, carry_out=0, neg_flag=0, zero_flag=0
+# [TB_LOOP] Inputs: a=10, b=6, opcode=3 | Outputs: y=14, neg_flag=0, zero_flag=0, carry_out=0
+# [SUCCESS] Time: 90080 | Matched expected: result:14, carry_out=0, neg_flag=0, zero_flag=0
+# Final Function Coverage: 100.00%
+# All tests passed successfully!
+# ** Note: $finish    : alu_cdv_tb.sv(205)
+#    Time: 100050 ns  Iteration: 0  Instance: /alu_cdv_tb
