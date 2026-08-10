@@ -173,7 +173,7 @@ module tb_alu;
     
     reset_seq();
     
-    repeat(1500) begin
+    repeat(5000) begin
       
       if(!check.randomize()) begin
         $error("Randomization failed!");
