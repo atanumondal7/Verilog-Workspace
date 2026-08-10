@@ -4,7 +4,7 @@ This was the first time I used constrained-random verification, `rand`/`constrai
 
 ## Architecture
  
-![ALU CDV Testbench Architecture](alu-cdv/docs/architecture.png)
+![ALU CDV Testbench Architecture](docs/architecture.png)
 
 ## Result
 
@@ -15,7 +15,7 @@ All tests passed successfully!
 
 5000 randomized transactions, 0 errors.
 
-![Waveform](alu-cdv/docs/waveform.jpg)
+![Waveform](docs/waveform.jpg)
 
 ## The Differentiating Factor
 
