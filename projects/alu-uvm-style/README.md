@@ -1,49 +1,53 @@
-# 4 bit ALU Testbench
+# 4-bit ALU — Constrained-Random Verification
 
-<img width="918" height="520" alt="4 bit ALU (CDV)" src="https://github.com/user-attachments/assets/b66b391c-2c26-462f-bae3-6ed814d6d612" />
+A 4-bit ALU (add, subtract, AND, OR, with zero/negative/carry flags) verified with a class-based, mailbox-connected testbench using actual `rand`/`constraint` stimulus and `covergroups`. Built using Aldec Riviera-Pro through EDA Playground, back when it was accessible
+without a corporate email. That access has since been locked down like the other commercial simulators, which is the reason why the [Universal Shift Register project](../universal-shift-register) had to fall back to manual randomization and manually-coded coverage tracking instead.
 
-By utilising OOP architecture and class implementations, I have created a multi-layered testbench spanning across 10 files in order to precisely verify every working component of the ALU and target edge cases by stress testing the input variables through a transaction (item) class.
+## Architecture
 
-## RTL Framework
+![ALU Testbench Architecture](docs/architecture.png)
 
-• [alu.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu.sv) (RTL Design): The core 4-bit Arithmetic Logic Unit module. It implements arithmetic (e.g., addition, subtraction) and bitwise logical operations across 4-bit input operands based on an operation selector (`ALU_Sel`), driving the resulting output along with status flags (such as zero, carry, or overflow).
+## Result
 
-## Class Architecture & Component Responsibilities
+```
+Functional Coverage: 100.00%
 
-The testbench follows a UVM-inspired layered design pattern, separating stimulus generation, driving, monitoring, and checking. For detailed inspection, visit the files in the following order:
+=====================================================
+              FINAL VERIFICATION SUMMARY
+=====================================================
+ Total Passed: 5000
+ Total Failed: 0
+=====================================================
+>>>> SIMULATION PASSED <<<<
+```
 
-• [alu_if.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_if.sv) (Interface): Encapsulates all ALU signals, clocking blocks, and modports to cleanly bridge the OOP testbench environment with the hardware design.
+![Waveform](docs/waveform-viewer.jpg)
 
-• [alu_item.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_item.sv) (Transaction Class): Defines the transaction object containing the inputs (`A`, `B`, `ALU_Sel`) and expected/actual outputs. Enforces constraints for targeted and random stimulus generation to hit edge cases.
+## Design Notes
 
-• [alu_generator.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_generator.sv) (Generator): Creates transactions, randomizes them based on targeted constraints, and passes them to the driver via mailboxes.
+Subtraction computes `a - b` unconditionally and lets it wrap on unsigned underflow, instead of branching the arithmetic on `a >= b`, giving correct 2's-complement behavior without building sign-magnitude subtraction.
 
-• [alu_driver.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_driver.sv) (Driver): Unpacks transactions received from the generator and drives the signal levels onto the virtual interface in sync with the design clock.
+The coverage cross (`X_a_b_opcode`) skips bins where the opcode is AND/OR with both operands mid-range which don't stress anything, so tracking them would just be wastage of CPU cycles. The bins that matter are the ones near overflow/underflow and the opcode/flag interactions.
 
-• [alu_monitor.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_monitor.sv) (Monitor): Passively samples signal activity on the virtual interface, captures response vectors, and forwards them to the scoreboard and coverage collector.
+## File Hierarchy
 
-• [alu_scoreboard.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_scoreboard.sv) (Scoreboard): Implements a golden reference model for the 4-bit ALU. Compares the actual output captured by the monitor against expected results and reports pass/fail statistics.
+| File | Role |
+|---|---|
+| [`alu.sv`](alu.sv) | RTL — combinational ALU: add/subtract/AND/OR with flags |
+| [`alu_if.sv`](alu_if.sv) | Interface + clocking block |
+| [`alu_item.sv`](alu_item.sv) | Transaction object, `rand` fields, weighted opcode `dist` constraint |
+| [`alu_generator.sv`](alu_generator.sv) | Drives `randomize()`, 5000 transactions |
+| [`alu_driver.sv`](alu_driver.sv) | Drives transactions onto the virtual interface |
+| [`alu_monitor.sv`](alu_monitor.sv) | Samples the virtual interface each cycle |
+| [`alu_scoreboard.sv`](alu_scoreboard.sv) | Golden reference model, self-checking pass/fail |
+| [`alu_coverage.sv`](alu_coverage.sv) | Covergroup with coverpoints and cross coverage |
+| [`alu_environment.sv`](alu_environment.sv) | Wires everything together |
+| [`alu_pkg.sv`](alu_pkg.sv) / [`alu_tb.sv`](alu_tb.sv) | Package and top-level testbench |
 
-• [alu_coverage.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_coverage.sv) (Functional Coverage): Defines covergroups and coverpoints for input combinations and ALU operations to ensure all edge cases and opcodes are thoroughly exercised.
-
-• [alu_environment.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_environment.sv) (Environment): Container class that instantiates, connects, and coordinates all testbench components (`generator`, `driver`, `monitor`, `scoreboard`, `coverage`).
-
-• [alu_pkg.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_pkg.sv) (Package): Encapsulates all classes, typedefs, and parameters into a single package scope for modular compilation.
-
-• [alu_tb.sv](https://github.com/atanumondal7/SystemVerilog-Workspace/blob/main/4%20bit%20ALU%20(UVM%20Style)/alu_tb.sv) (Top Testbench Module): The top-level SystemVerilog module that generates the clock/reset, instantiates the Design Under Test (`alu.sv`) and interface (`alu_if.sv`), and runs the environment.
-
-## Simulation / How to Run
-
-To compile and execute the testbench and DUT in Siemens Questa:
+## Compilation & Simulation
 
 ```bash
-vlib work
-vmap work work
+python run.py
+```
 
-vlog -sv alu.sv alu_pkg.sv alu_if.sv alu_tb.sv
-
-vsim -c -voptargs="+acc" work.alu_tb
-vcd file dump.vcd
-vcd add -r /alu_tb/*
-run -all
-quit -f
+Configures the Questa workflow (compile, elaborate, simulate) and runs all 5000 transactions in one pass. Console output shows the running pass/fail count as it goes, and the coverage summary is printed once the environment's `#100` drain window finishes.
