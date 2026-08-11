@@ -1,0 +1,22 @@
+# [SCOREBOARD MATCH] d=2  en=1 -> y=00000100
+# [SCOREBOARD MATCH] d=5  en=1 -> y=00100000
+# [SCOREBOARD MATCH] d=5  en=1 -> y=00100000
+# [SCOREBOARD MATCH] d=7  en=1 -> y=10000000
+# [SCOREBOARD MATCH] d=x  en=x -> y=xxxxxxxx
+# ===================================================
+#                COVERAGE SUMMARY
+# ===================================================
+#  Enable Cover: Covered
+#  Disable Cover: Covered
+#  Input Cover with Enable: 8/8, 100.00%
+# ===================================================
+#  Total Coverage: 100.00%
+# ===================================================
+#             FINAL VERIFICATION SUMMARY
+# ===================================================
+#  Total Passed: 1000
+#  Total Failed: 0
+# ===================================================
+# >>>> SIMULATION PASSED <<<<
+# ** Note: $finish    : dec_environment.sv(81)
+#    Time: 20010020 ps  Iteration: 0  Instance: /dec_tb
