@@ -1,0 +1,22 @@
+# [SCOREBOARD MATCH] req=11111010 -> grant=7  valid=1
+# [SCOREBOARD MATCH] req=00000110 -> grant=2  valid=1
+# [SCOREBOARD MATCH] req=01011101 -> grant=6  valid=1
+# [SCOREBOARD MATCH] req=00010011 -> grant=4  valid=1
+# ===================================================
+#                COVERAGE SUMMARY
+# ===================================================
+#  Grant cover: 8/8, 100.00%
+#  Valid cover: 2/2, 100.00%
+#  Hot Req: Covered
+#  Cold Req: Covered
+# ===================================================
+#  Total Coverage: 100.00%
+# ===================================================
+#             FINAL VERIFICATION SUMMARY
+# ===================================================
+#  Total Passed: 5000
+#  Total Failed: 0
+# ===================================================
+# >>>> TEST PASSED <<<<
+# ** Note: $finish    : prioenc_environment.sv(85)
+#    Time: 199990020 ps  Iteration: 0  Instance: /prioenc_tb
