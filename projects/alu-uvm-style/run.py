@@ -60,7 +60,7 @@ def run_simulation():
             run_output = fl.read()
            
     with open(history_log_path, "a") as fl:
-        fl.write("/n")
+        fl.write("\n")
         fl.write("==================================================\n")
         fl.write(f"SIMULATION RUN STARTED: {start_time}\n")
         fl.write(f"Working Directory: {project_dir}\n")

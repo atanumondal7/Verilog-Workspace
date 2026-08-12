@@ -57,10 +57,11 @@ def run_simulation():
             run_output = fl.read()
             
     with open(history_log_path, "a") as fl:
-        fl.write("=============================================")
-        fl.write("SIMULATION LOGGING STARTED AT {start_time}")
-        fl.write("[INFO] LOGS APPENDED IN {history_log_path}")
-        fl.write("=============================================")
+        fl.write("\n")
+        fl.write("=============================================\n")
+        fl.write("SIMULATION LOGGING STARTED AT {start_time}\n")
+        fl.write("[INFO] LOGS APPENDED IN {history_log_path}\n")
+        fl.write("=============================================\n")
         
     if os.path.exists(temp_transcript_file):
         os.remove(temp_transcript_file)
