@@ -33,7 +33,7 @@ def run_simulation():
     tcl_command = (
         "vcd file waves.vcd; "
         "vcd add -r /alu_tb/*; "
-        "onBreak {resume}; "
+        "onbreak {resume}; "
         "onElabError {resume}; "
         "set NoQuitOnFinish 1; "
         "run -all;"

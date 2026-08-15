@@ -64,7 +64,8 @@ def run_simulation():
         fl.write(f"SIMULATION RUN STARTED {start_time}\n")
         fl.write(f"PROJECT DIRECTORY {project_dir}\n")
         fl.write("=========================================\n")
-    
+        fl.write(run_output)
+        
     print(f"[INFO] Appended this run to: {log_path}")
     
     if os.path.exists(temp_path):

@@ -7,7 +7,7 @@ def run_cmd(cmd, check=True):
     print(f"[INFO] Running command: {' '.join(cmd)}")
     result = subprocess.run(cmd, text=True)
     if check and result.returncode != 0:
-        print(f"Error command failed with return code {result.returncode}")
+        print(f"[ERROR] command failed with return code {result.returncode}")
         sys.exit(result.returncode)
         
 def run_simulation():
@@ -58,16 +58,16 @@ def run_simulation():
     
     run_output = ""
     if os.path.exists(temp_transcript_path):
-        with open(temp_transcript_path, "r") as fh:
-            run_output = fh.read()
+        with open(temp_transcript_path, "r") as fl:
+            run_output = fl.read()
             
-    with open(history_log_path, "a") as fh:
-        fh.write("\n")
-        fh.write("==================================================\n")
-        fh.write(f"SIMULATION RUN STARTED: {start_time}\n")
-        fh.write(f"Working Directory: {project_dir}\n")
-        fh.write("==================================================\n")
-        fh.write(run_output)
+    with open(history_log_path, "a") as fl:
+        fl.write("\n")
+        fl.write("==================================================\n")
+        fl.write(f"SIMULATION RUN STARTED: {start_time}\n")
+        fl.write(f"Working Directory: {project_dir}\n")
+        fl.write("==================================================\n")
+        fl.write(run_output)
         
     print(f"[INFO] Appended this run to: {history_log_path}")
     

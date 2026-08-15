@@ -32,10 +32,10 @@ def run_simulation():
     
     tcl_cmd = (
     "vcd file waves.vcd; "
-    "vcd add -r /prioend_tb/*; "
-    "onBreak {resume}; "
+    "vcd add -r /prioenc_tb/*; "
+    "onbreak {resume}; "
     "onElabError {resume}; "
-    "set NoFinishOnQuit 1; "
+    "set NoQuitOnFinish 1; "
     "run -all; "
     "quit -f; "
     )
@@ -59,9 +59,12 @@ def run_simulation():
     with open(history_log_path, "a") as fl:
         fl.write("\n")
         fl.write("=============================================\n")
-        fl.write("SIMULATION LOGGING STARTED AT {start_time}\n")
-        fl.write("[INFO] LOGS APPENDED IN {history_log_path}\n")
+        fl.write(f"SIMULATION LOGGING STARTED AT {start_time}\n")
+        fl.write(f"WORKING DIRECTORY: {project_dir}\n")
         fl.write("=============================================\n")
+        fl.write(run_output)
+        
+    print(f"[INFO] Appended this run to: {history_log_path}")
         
     if os.path.exists(temp_transcript_file):
         os.remove(temp_transcript_file)
