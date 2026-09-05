@@ -13,6 +13,7 @@ Presented in the order I built them. Each project steps up a notch from the one 
 | [`priority-encoder`](projects/priority-encoder) | An 8-bit priority encoder with a clocking-block skew bug I found and fixed | Mailboxes, golden reference model, manual coverage (12 bins) | Siemens Questa |
 | [`decoder`](projects/decoder) | A 3-to-8 decoder with a proper clocking-skew fix, plus deliberate X-propagation testing | Manual coverage (10 bins), `===` 4 state case equality | Siemens Questa |
 | [`universal-shift-register`](projects/universal-shift-register) | The most interesting of the five: a parameterized sequential USR with a self-checking testbench and a *sampling latency* bug that cost 2 buffer cycles for fixing | Mailboxes, golden reference model, manual coverage (85 bins) | Siemens Questa |
+| [`fifo-buffer`](projects/fifo-buffer) | A parameterized synchronous FIFO where the real challenge was the RTL itself: pointer-based fullness tracking and getting overflow/underflow to behave as pulses, not latches | Subdivided `rtl/`/`testbench/`/`sim/` layout with a `files.f` filelist, mailboxes, golden reference model, manual coverage (9 bins) | Siemens Questa |
 
 ## Basics
 
