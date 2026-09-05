@@ -1,0 +1,31 @@
+# [ITEM] rst=0  wr_en=1  rd_en=1  din=196 -> dout=192  empty=0  full=0  overflow_err=0  underflow_err=0
+# [SCOREBOARD MATCH] rst=0, wr_en=1, rd_en=1, din=196 -> dout=192, empty=0, full=0, overflow_err=0, underflow_err=0
+# [ITEM] rst=0  wr_en=1  rd_en=1  din=66 -> dout=196  empty=0  full=0  overflow_err=0  underflow_err=0
+# [SCOREBOARD MATCH] rst=0, wr_en=1, rd_en=1, din=66 -> dout=196, empty=0, full=0, overflow_err=0, underflow_err=0
+# [ITEM] rst=0  wr_en=1  rd_en=1  din=116 -> dout=66  empty=0  full=0  overflow_err=0  underflow_err=0
+# [SCOREBOARD MATCH] rst=0, wr_en=1, rd_en=1, din=116 -> dout=66, empty=0, full=0, overflow_err=0, underflow_err=0
+# [ITEM] rst=0  wr_en=1  rd_en=1  din=137 -> dout=116  empty=0  full=0  overflow_err=0  underflow_err=0
+# [SCOREBOARD MATCH] rst=0, wr_en=1, rd_en=1, din=137 -> dout=116, empty=0, full=0, overflow_err=0, underflow_err=0
+# [ITEM] rst=0  wr_en=1  rd_en=1  din=137 -> dout=137  empty=0  full=0  overflow_err=0  underflow_err=0
+# [SCOREBOARD MATCH] rst=0, wr_en=1, rd_en=1, din=137 -> dout=137, empty=0, full=0, overflow_err=0, underflow_err=0
+# ===================================================
+#                COVERAGE SUMMARY
+# ===================================================
+#  Reset Cover: Covered
+#  Write Enable Cover: Covered
+#  Read Enable Cover: Covered
+#  Data Input Cover: Covered
+#  Data Output Cover: Covered
+#  Empty Cover: Covered
+#  Full Cover: Covered
+#  Overflow Error Cover: Covered
+#  Underflow Error Cover: Covered
+# ===================================================
+#  Total Coverage: 100.00%
+# ===================================================
+#             FINAL VERIFICATION SUMMARY
+# ===================================================
+#  Total Passed: 1000
+#  Total Failed: 0
+# ===================================================
+# >>>> SIMULATION PASSED <<<<
